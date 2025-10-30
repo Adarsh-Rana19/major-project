@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to the Room</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .notepad {
+        margin-top: 2rem;
+        background: white;
+        color: black;
+        padding: 1rem;
+        border-radius: 10px;
+        min-height: 300px;
+        width: 100%;
+        outline: none;
+        font-size: 1rem;
+        line-height: 1.5;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        white-space: pre-wrap;
+      }
+    </style>
+    <script>
+      let currentRoom = "";
+
+      window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get("name") || "Guest";
+        const room = params.get("room") || "Unknown";
+        currentRoom = room;
+
+        document.getElementById("welcomeText").textContent =
+          "👋 Welcome, " + name + "!";
+        document.getElementById("roomId").textContent = "📌 Room ID: " + room;
+
+        const savedNotes = localStorage.getItem("notes_" + room) || "";
+        document.getElementById("notepad").innerText = savedNotes;
+      };
+
+      function saveNotes() {
+        const notes = document.getElementById("notepad").innerText;
+        localStorage.setItem("notes_" + currentRoom, notes);
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 id="welcomeText">👋 Welcome!</h1>
+        <p id="roomId">📌 Room ID:</p>
+        <p>You are now connected to your collaborative space 🚀</p>
+      </div>
+
+      <div>
+        <h2 style="margin-top: 2rem">📝 Shared Notepad</h2>
+        <div
+          id="notepad"
+          class="notepad"
+          contenteditable="true"
+          onkeyup="saveNotes()"
+        ></div>
+      </div>
+    </div>
+  </body>
+</html>

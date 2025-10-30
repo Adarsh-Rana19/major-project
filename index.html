@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeX - Rooms</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    function createRoom() {
+      const name = document.getElementById("createName").value.trim();
+      if (name) {
+        
+        const roomId = Math.random().toString(36).substring(2, 8).toUpperCase();
+        window.location.href = "room.html?name=" + encodeURIComponent(name) + "&room=" + roomId;
+      } else {
+        alert("Please enter your name.");
+      }
+    }
+
+    function joinRoom() {
+      const roomId = document.getElementById("joinRoomId").value.trim();
+      const name = document.getElementById("joinName").value.trim();
+
+      if (roomId && name) {
+        window.location.href = "room.html?name=" + encodeURIComponent(name) + "&room=" + encodeURIComponent(roomId);
+      } else {
+        alert("Please enter both Room ID and your name.");
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <h1>✨ Code together <br> now on <span>CodeX</span></h1>
+      <p>Your collaborative coding space, reimagined.</p>
+    </div>
+
+    <div class="form-section">
+      <div class="form-box">
+        <h2>Create a Room</h2>
+        <input type="text" id="createName" placeholder="Enter your name">
+        <button onclick="createRoom()">Create Room</button>
+      </div>
+      <div class="form-box">
+        <h2>Join a Room</h2>
+        <input type="text" id="joinRoomId" placeholder="Room ID (e.g. ABC123)">
+        <input type="text" id="joinName" placeholder="Enter your name">
+        <button onclick="joinRoom()">Join Room →</button>
+      </div>
+    </div>
+
+     <div class="features">
+      <div class="feature">
+        <h3>💻 Real-time Collaboration</h3>
+        <p>Code together in real-time with cursor sharing, highlighting, and follow mode.</p>
+      </div>
+      <div class="feature">
+        <h3>⚡ Live Preview</h3>
+        <p>Preview UI changes instantly with loaded libraries like Tailwind CSS, and more.</p>
+      </div>
+      <div class="feature">
+        <h3>📝 Shared Notepad</h3>
+        <p>Take notes together in real-time with rich text and markdown support.</p>
+      </div>
+      <div class="feature">
+        <h3>💻 Shared Terminal</h3>
+        <p>Execute code and see results together .</p>
+      </div>
+      <div class="feature">
+        <h3>🔗 GitHub Integrated</h3>
+        <p>Save your work and open files from your repositories.</p>
+      </div>
+    </div>
+
+    <div class="status">
+      <p>🟢 Server Online</p>
+    </div>
+
+  </div>
+
+  </div>
+</body>
+</html>
