@@ -1,0 +1,146 @@
+/* 🌈 Base Layout */
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+  min-height: 100vh;
+}
+
+/* 🧱 Container */
+.room-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+}
+
+/* 🏷️ Header */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  margin: 0.3rem 0;
+}
+
+/* 📝 Shared Notepad */
+.notepad {
+  width: 100%;
+  min-height: 200px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 1rem;
+  color: #fff;
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  margin-top: 1rem;
+  white-space: pre-wrap;
+  border: none;
+  outline: none;
+}
+
+/* 💻 Code Editor Section */
+.compiler-section {
+  margin-top: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.compiler-section h2 {
+  color: #fff;
+}
+
+/* ✏️ Textareas */
+textarea {
+  width: 100%;
+  background: #0b1220;
+  color: #e6f6ff;
+  border-radius: 10px;
+  border: none;
+  padding: 0.8rem;
+  font-family: "Fira Code", monospace;
+  font-size: 1rem;
+  resize: vertical;
+  margin-top: 1rem;
+}
+
+/* 🧾 Output Box */
+.output-box {
+  background: #0b1220;
+  color: #e6f6ff;
+  padding: 1rem;
+  border-radius: 10px;
+  min-height: 120px;
+  white-space: pre-wrap;
+  font-family: monospace;
+  margin-top: 0.5rem;
+}
+
+/* ▶️ Buttons */
+.run-btn {
+  background: #3a4dff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: 0.3s;
+}
+
+.run-btn:hover {
+  background: #2534cc;
+}
+
+/* 🎥 Video Area */
+.video-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+video {
+  width: 320px;
+  height: 240px;
+  background: black;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* 🔘 Video Controls */
+.controls {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.controls button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: #3a4dff;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 🧭 Responsive */
+@media (max-width: 768px) {
+  .room-container {
+    padding: 1rem;
+  }
+}

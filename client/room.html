@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeX - Room</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="room.css" />
+  </head>
+
+  <body>
+    <div class="room-container">
+      <div class="header">
+        <h1 id="welcomeText">👋 Welcome!</h1>
+        <p id="roomId">📌 Room ID:</p>
+        <p>You are now connected to your collaborative space 🚀</p>
+      </div>
+
+      <!-- 🧠 Shared Notepad -->
+      <h2 style="margin-top: 2rem">📝 Shared Notepad</h2>
+      <div
+        id="notepad"
+        class="notepad"
+        contenteditable="true"
+        onkeyup="saveNotes()"
+      ></div>
+
+      <!-- 💻 Java Compiler -->
+      <div class="compiler-section">
+        <h2>💻 Java Code Compiler</h2>
+
+        <label for="sampleSelect"><b>📚 Load Sample Code:</b></label>
+        <select
+          id="sampleSelect"
+          onchange="loadSampleCode()"
+          style="margin-left: 1rem; padding: 0.4rem; border-radius: 6px"
+        >
+          <option value="">-- Select Example --</option>
+          <option value="sum">1️⃣ Basic Input & Sum</option>
+          <option value="loop">2️⃣ Loop Example</option>
+          <option value="string">3️⃣ String Manipulation</option>
+          <option value="ifelse">4️⃣ Conditional (if-else)</option>
+          <option value="array">5️⃣ Array Example</option>
+        </select>
+
+        <!-- Java Code Area -->
+        <textarea
+          id="javaCode"
+          placeholder="Write your Java code here..."
+          rows="10"
+        >
+public class Main {
+  public static void main(String[] args) {
+    System.out.println("Hello CodeX!");
+  }
+}
+</textarea
+        >
+
+        <!-- 🆕 Input Area -->
+        <h3>📥 Input (optional)</h3>
+        <textarea
+          id="inputData"
+          placeholder="Enter input here if your program needs it..."
+          rows="3"
+        ></textarea>
+
+        <!-- Run Button -->
+        <button class="run-btn" onclick="runJavaCode()">Run Code</button>
+
+        <!-- Output Display -->
+        <h3>🧾 Output</h3>
+        <pre id="output" class="output-box">// Output will appear here</pre>
+      </div>
+
+      <!-- 🎥 Video Chat -->
+      <div style="margin-top: 2rem">
+        <h2>🎥 Live Video Call</h2>
+        <button class="run-btn" onclick="startVideo()">Start Video</button>
+        <div class="video-area" id="videoArea">
+          <video id="localVideo" autoplay muted></video>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentRoom = "";
+
+      // ✅ Setup on page load
+      window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get("name") || "Guest";
+        const room = params.get("room") || "Unknown";
+        currentRoom = room;
+
+        document.getElementById("welcomeText").textContent =
+          "👋 Welcome, " + name + "!";
+        document.getElementById("roomId").textContent = "📌 Room ID: " + room;
+
+        const savedNotes = localStorage.getItem("notes_" + room) || "";
+        document.getElementById("notepad").innerText = savedNotes;
+      };
+
+      // 📝 Save notepad in localStorage
+      function saveNotes() {
+        const notes = document.getElementById("notepad").innerText;
+        localStorage.setItem("notes_" + currentRoom, notes);
+      }
+
+      // 💻 Run Java Code (API call to backend)
+      async function runJavaCode() {
+        const code = document.getElementById("javaCode").value;
+        const input = document.getElementById("inputData").value;
+        const outputBox = document.getElementById("output");
+
+        outputBox.textContent = "⏳ Running your Java code...";
+
+        try {
+          const response = await fetch("/run-java", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code, input }), // ✅ send both code + input
+          });
+
+          const data = await response.json();
+
+          if (data.error) {
+            outputBox.textContent = "❌ Error:\n" + data.error;
+          } else {
+            outputBox.textContent = "✅ Output:\n" + data.output;
+          }
+        } catch (err) {
+          outputBox.textContent = "⚠️ Failed to run code: " + err.message;
+        }
+      }
+
+      // 🎥 Start simple local video
+      async function startVideo() {
+        const video = document.getElementById("localVideo");
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+          });
+          video.srcObject = stream;
+        } catch (err) {
+          alert("Error accessing camera/mic: " + err.message);
+        }
+      }
+      function loadSampleCode() {
+        const select = document.getElementById("sampleSelect");
+        const textarea = document.getElementById("javaCode");
+
+        const samples = {
+          sum: `import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int a = sc.nextInt();
+    int b = sc.nextInt();
+    System.out.println("Sum is: " + (a + b));
+  }
+}`,
+          loop: `import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int n = sc.nextInt();
+    int sum = 0;
+    for (int i = 1; i <= n; i++) sum += i;
+    System.out.println("Sum of 1 to " + n + " = " + sum);
+  }
+}`,
+          string: `import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    String name = sc.nextLine();
+    System.out.println("Uppercase: " + name.toUpperCase());
+    System.out.println("Length: " + name.length());
+  }
+}`,
+          ifelse: `import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int marks = sc.nextInt();
+    if (marks >= 90) System.out.println("Grade: A+");
+    else if (marks >= 75) System.out.println("Grade: A");
+    else if (marks >= 60) System.out.println("Grade: B");
+    else System.out.println("Grade: C");
+  }
+}`,
+          array: `import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int n = sc.nextInt();
+    int arr[] = new int[n];
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+      arr[i] = sc.nextInt();
+      sum += arr[i];
+    }
+    System.out.println("Average: " + (sum / (double)n));
+  }
+}`,
+        };
+
+        textarea.value = samples[select.value] || "";
+      }
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      // Parse URL parameters
+      const params = new URLSearchParams(window.location.search);
+      const userName = params.get("name");
+      const roomId = params.get("room");
+
+      // Join the room
+      socket.emit("join-room", { roomId, userName });
+
+      // Handle user joined event
+      socket.on("user-joined", (user) => {
+        console.log(`${user} joined the room`);
+      });
+
+      // Handle editor changes (shared notepad or code editor)
+      const editor = document.getElementById("javaCode"); // or your notepad textarea
+
+      editor.addEventListener("input", () => {
+        socket.emit("editor-change", { roomId, content: editor.value });
+      });
+
+      socket.on("editor-update", (content) => {
+        editor.value = content;
+      });
+    </script>
+  </body>
+</html>
